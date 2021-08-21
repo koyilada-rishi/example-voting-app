@@ -8,8 +8,8 @@ var express = require('express'),
     methodOverride = require('method-override'),
     app = express(),
     server = require('http').Server(app),
-    io = require('socket.io')(server);
-
+    io = require('socket.io')(server),
+    env = require('./env.json');
 io.set('transports', ['polling']);
 
 var port = process.env.PORT || 4000;
@@ -21,6 +21,8 @@ io.sockets.on('connection', function (socket) {
   socket.on('subscribe', function (data) {
     socket.join(data.channel);
   });
+  console.log(env);
+  socket.emit('names',env);
 });
 
 var pool = new pg.Pool({
@@ -82,7 +84,9 @@ app.use(function(req, res, next) {
 app.use(express.static(__dirname + '/views'));
 
 app.get('/', function (req, res) {
-  res.sendFile(path.resolve(__dirname + '/views/index.html'));
+  // res.sendFile(path.resolve(__dirname + '/views/index.html'));
+  console.log(name1, name2)
+  res.render(path.resolve(__dirname + '/views/index.html'),{name1:name1,name2:name2});
 });
 
 server.listen(port, function () {
