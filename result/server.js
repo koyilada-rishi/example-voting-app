@@ -9,7 +9,7 @@ var express = require('express'),
     app = express(),
     server = require('http').Server(app),
     io = require('socket.io')(server),
-    env = require('./env.json');
+    env = require('./asset/env.json');
 io.set('transports', ['polling']);
 
 var port = process.env.PORT || 4000;
